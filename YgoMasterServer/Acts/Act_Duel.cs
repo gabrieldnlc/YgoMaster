@@ -814,5 +814,80 @@ namespace YgoMaster
                 }
             }
         }
+
+        /// <summary>
+        /// Creates a custom duel with the specified player and opponent decks.
+        /// This is the primary interface for creating quick create-a-duel scripts.
+        /// </summary>
+        /// <param name="playerDeck">The deck for player 1 (human player)</param>
+        /// <param name="opponentDeck">The deck for player 2 (opponent/CPU)</param>
+        /// <param name="settings">Optional additional duel settings (can be null for defaults)</param>
+        /// <returns>A fully configured DuelSettings object ready for use</returns>
+        /// <example>
+        /// // Example usage in a script:
+        /// DeckInfo playerDeck = new DeckInfo();
+        /// playerDeck.File = Path.Combine(dataDirectory, "MyDeck.ydk");
+        /// playerDeck.Load();
+        /// 
+        /// DeckInfo opponentDeck = new DeckInfo();
+        /// opponentDeck.File = Path.Combine(dataDirectory, "OpponentDeck.ydk");
+        /// opponentDeck.Load();
+        /// 
+        /// DuelSettings duel = CreateDuel(playerDeck, opponentDeck, null);
+        /// </example>
+        public DuelSettings CreateDuel(DeckInfo playerDeck, DeckInfo opponentDeck, Dictionary<string, object> settings)
+        {
+            if (playerDeck == null)
+            {
+                throw new ArgumentNullException("playerDeck");
+            }
+            if (opponentDeck == null)
+            {
+                throw new ArgumentNullException("opponentDeck");
+            }
+
+            // Create base duel settings
+            DuelSettings duelSettings = new DuelSettings();
+            
+            // Set the decks
+            duelSettings.Deck[DuelSettings.PlayerIndex] = playerDeck;
+            duelSettings.Deck[DuelSettings.CpuIndex] = opponentDeck;
+            
+            // Apply custom settings if provided
+            if (settings != null)
+            {
+                duelSettings.FromDictionary(settings);
+            }
+            
+            // Mark as custom duel
+            duelSettings.IsCustomDuel = true;
+            
+            // Set required defaults
+            duelSettings.SetRequiredDefaults();
+            
+            // Set default player names if not provided
+            if (string.IsNullOrEmpty(duelSettings.name[DuelSettings.PlayerIndex]))
+            {
+                duelSettings.name[DuelSettings.PlayerIndex] = DuelSettings.DefaultNamePlayer;
+            }
+            if (string.IsNullOrEmpty(duelSettings.name[DuelSettings.CpuIndex]))
+            {
+                duelSettings.name[DuelSettings.CpuIndex] = DuelSettings.DefaultNameCPU;
+            }
+            
+            // Set random seed if not provided
+            if (duelSettings.RandSeed == 0)
+            {
+                duelSettings.RandSeed = (uint)rand.Next();
+            }
+            
+            // Set first player if not specified
+            if (duelSettings.FirstPlayer <= -1)
+            {
+                duelSettings.FirstPlayer = rand.Next(2);
+            }
+            
+            return duelSettings;
+        }
     }
 }
