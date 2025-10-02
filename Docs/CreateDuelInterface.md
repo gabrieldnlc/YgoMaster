@@ -39,6 +39,10 @@ opponentDeck.Load();
 DuelSettings duel = gameServer.CreateDuel(playerDeck, opponentDeck, null);
 ```
 
+### Quick Start with Existing Game Decks
+
+Want to try it immediately? See [RunDuelWithExistingDecks.cs](Examples/RunDuelWithExistingDecks.cs) for examples using structure decks that come with the game - no need to create your own deck files!
+
 ## Advanced Usage with Custom Settings
 
 ```csharp

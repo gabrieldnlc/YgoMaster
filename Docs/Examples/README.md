@@ -4,6 +4,15 @@ This directory contains example scripts demonstrating how to use the `CreateDuel
 
 ## Files
 
+### RunDuelWithExistingDecks.cs ⭐ NEW
+**Practical examples using actual game decks!** Shows how to:
+- Run duels with random structure decks from the game
+- Run duels with specific structure decks by ID
+- Load and run duel configurations from Solo mode
+- Helper method for loading structure deck JSON files
+
+This is the **recommended starting point** as it uses real deck data that already exists in the game.
+
 ### CreateDuelExample.cs
 Comprehensive examples showing various use cases of the `CreateDuel` method:
 - Simple duel creation
@@ -20,6 +29,22 @@ A simple, copy-paste ready script for quickly creating custom duels. This is the
 
 ## Quick Start
 
+### Option 1: Use Existing Game Decks (Recommended)
+
+1. Use `RunDuelWithExistingDecks.cs` which uses actual structure decks from the game
+2. No need to create or find deck files - they're already included!
+3. Call any of the example methods:
+
+```csharp
+// Run with two random structure decks
+DuelSettings duel = RunDuelWithExistingDecks.RunDuelWithRandomStructureDecks(gameServer, dataDirectory);
+
+// Or run all examples at once
+RunDuelWithExistingDecks.RunAllExamples(gameServer, dataDirectory);
+```
+
+### Option 2: Use Your Own Decks
+
 1. Copy `QuickDuelScript.cs` to your YgoMaster integration
 2. Modify the configuration section:
    - Set your deck file names
@@ -29,7 +54,10 @@ A simple, copy-paste ready script for quickly creating custom duels. This is the
 ## Example Usage
 
 ```csharp
-// Basic usage
+// Using existing game decks (easiest!)
+DuelSettings duel = RunDuelWithExistingDecks.RunDuelWithRandomStructureDecks(gameServer, dataDirectory);
+
+// Using your own decks
 DuelSettings duel = QuickDuelScript.CreateMyDuel(gameServer, dataDirectory);
 
 // Or save as CustomDuel.json to replace the tutorial
